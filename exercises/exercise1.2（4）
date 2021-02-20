@@ -1,0 +1,110 @@
+#include "stdafx.h"
+#include<stdio.h>
+#include<stdlib.h>
+ 
+typedef struct LNode
+{
+	int data;
+	struct LNode *next;
+}LNode, *LinkList;
+void CreateList(LinkList &L, int n)
+{
+	L = new LNode;
+	L->next = NULL;
+	LNode *p;
+	p= L;
+	for (int i = 0; i < n; i++)
+	{
+		printf("enter the value of the %d element:", i + 1);
+		LNode *q;
+		q = new LNode;
+		scanf("%d", &q->data);
+		q->next = NULL;
+		p->next = q;
+		p = q;
+	}
+}
+void Diff(LinkList &La,LinkList &Lb)
+{
+	LNode *p1,*p2,*p3,*q;
+	p1=La->next;
+	p2=Lb->next;
+	p3=La;
+	La->data=0;
+	while(p1!=NULL&&p2!=NULL)
+	{
+		if(p1->data < p2->data)
+		{
+			p3->next=p1;
+			p3=p1;
+			p1=p1->next;
+			La->data++;
+		}
+		else if(p2->data < p1->data)
+		{
+			q=p2;
+			p2=p2->next;
+			free(q);
+		}
+		else
+		{
+			q=p1;
+			p1=p1->next;
+			free(q);
+			q=p2;
+			p2=p2->next;
+			free(q);
+		}
+	}
+	while(p1!=NULL)
+	{
+		p3->next=p1;
+		p3=p1;
+		p1=p1->next;
+		La->data++;
+	}
+	p3->next=NULL;
+	while(p2!=NULL)
+	{
+		q=p2;
+		p2=p2->next;
+		free(q);
+	}
+	free(Lb);
+}
+void TraveList(LinkList L)
+{
+	LNode *p;
+	p = L->next; 
+	while (p!=NULL)
+	{
+		printf("%d ", p->data);
+		p = p->next;
+	}
+	printf("\n");
+}
+int _tmain(int argc, _TCHAR* argv[])
+{
+	int n,m;
+	LinkList La,Lb;
+	LNode *p;
+	printf("length of input La\n");
+	scanf("%d",&n);
+	printf("length of input Lb\n");
+	scanf("%d",&m);
+	if(n==0 && m==0) 
+		printf("fail\n");
+	CreateList(La,n);
+	CreateList(Lb,m);
+	Diff(La,Lb);
+	printf("the difference set between A and B is\n");
+	TraveList(La);
+	printf("the number of elements in the set is:%d\n",La->data);
+	getchar();
+	getchar();
+	return 0;
+}
+
+
+
+
