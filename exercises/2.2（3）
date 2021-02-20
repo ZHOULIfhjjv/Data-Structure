@@ -1,0 +1,111 @@
+(3)已知两个链表A和B分别表示两个集合，其元素递增排列。请设计一个算法，用千求出
+A与B的交集，并存放在A链表中。
+#include "stdafx.h"
+#include <stdio.h>
+#include<stdlib.h>
+typedef struct ListNode
+{
+	int data;
+	struct ListNode *next;
+}ListNode, *LinkList;
+int InitList(LinkList &L)
+{
+	L = new ListNode;
+	L->next = NULL;
+	return 1;
+}
+void TraveList(LinkList L)
+{
+	ListNode *p;
+	p = L->next; 
+	while (p!=NULL)
+	{
+		printf("%d ", p->data);
+		p = p->next;
+	}
+	printf("\n");
+}
+void CreateList(LinkList &L, int n)
+{
+	L = new ListNode;
+	L->next = NULL;
+	ListNode *q;
+	q = L;
+	for (int i = 0; i < n; i++)
+	{
+		printf("请输入链表第%d个元素的值:", i + 1);
+		ListNode *m;
+		m = new ListNode;
+		scanf("%d", &m->data);
+		m->next = NULL;
+		q->next = m;
+		q = m;
+	}
+}
+void Intersection(LinkList &La, LinkList &Lb, LinkList &Lc)
+{
+	ListNode *pa, *pb, *pc, *q, *f;
+	pa = La->next;
+	pb= Lb->next;  
+	pc= Lc = La;   	
+	while (pa!=NULL&&pb!=NULL)
+	{
+		if (pa->data == pb->data)   
+		{ 
+			pc->next = pa; 
+			pc = pa; 
+			pa = pa->next;
+			f = pb; 
+			pb = pb->next; 
+			delete f; 
+		}
+		else if (pa->data < pb->data) 
+		{ 
+			f= pa; 
+			pa = pa->next; 
+			delete f; 
+		}
+		else 
+		{ 
+			f= pb; 
+			pb = pb->next; 
+			delete f; 
+		}
+	}
+	while (pa!=NULL) 
+	{ 
+		f = pa;
+		pa= pa->next; 
+		delete f; 
+	}
+	
+	while (pb!=NULL)   
+	{
+		f = pb; 
+		pb = pb->next; 
+		delete f;
+	}	
+	pc->next = NULL;    	
+	delete Lb;   
+}
+int _tmain(int argc, _TCHAR* argv[])
+{
+	LinkList La, Lb, Lc; 
+	printf("length of input La:");
+	int n1;
+	scanf("%d", &n1);
+	CreateList(La, n1);
+	TraveList(La); 
+	printf("length of input Lb:");
+	int n2;
+	scanf("%d", &n2);
+	CreateList(Lb, n2);
+	TraveList(Lb); 
+	Intersection(La, Lb, Lc);
+	printf("the intersection of linked lists is:\n");
+	TraveList(Lc);
+	getchar();
+	getchar();
+	return 0;
+}
+
