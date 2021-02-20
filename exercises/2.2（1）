@@ -1,0 +1,94 @@
+#include "stdafx.h"
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct
+{
+	int val;
+}Val;
+typedef struct LNode 
+{
+    Val elem;
+    struct LNode *next;
+}LNode ,*Linklist;
+int InitList(Linklist &L)
+{
+    L=(Linklist)malloc(sizeof(LNode));
+    L->next=NULL;
+    return 1;
+}
+void CreateList(Linklist &L,int n)
+{   
+    Linklist f;
+    f=L;
+    for(int i=0;i<n;i++)
+    {
+        Linklist p=new LNode;
+        printf("Input%d number\n",i+1);
+        scanf("%d",&p->elem.val);        
+        p->next=NULL;
+        f->next=p;
+        f=p;
+    }    
+}
+void MergeList(Linklist &La,Linklist &Lb,Linklist &Lc)
+{
+    Linklist pa=La->next;  
+	Linklist pb=Lb->next;
+    Linklist pc;
+	Lc=pc=La;  
+   while(pa!=NULL&&pb!=NULL)
+   { 
+	   if(pa->elem.val<pb->elem.val)
+   { 
+	   pc->next=pa;
+	   pc=pa;
+	   pa=pa->next;
+   }
+   else if
+	   (pa->elem.val>pb->elem.val) 
+   {
+	   pc->next=pb;
+	   pc=pb; 
+	   pb=pb->next;
+   }
+     else
+   {
+	   pc->next=pa;
+	   pc=pa;
+	   pa=pa->next;
+       Linklist q=pb->next;
+       delete pb;
+	 pb =q;
+   }
+   }
+   pc->next=pa?pa:pb;
+   delete Lb;           
+}
+void output(Linklist L)
+{
+    Linklist p=L;
+    p=L->next;
+    while(p!=NULL)
+    {
+        printf("%2d",p->elem.val);
+        p=p->next;
+    }
+}
+int _tmain(int argc, _TCHAR* argv[])
+{
+    Linklist La,Lb,Lc;
+    InitList(La);
+    InitList(Lb);
+    int n1,n2;
+    printf("Enter the number of each linked list\n");
+    scanf("%d %d",&n1,&n2);
+    printf("Input data from  the first linked list\n");
+    CreateList(La, n1);
+    printf("Input data from  the second linked list\n");
+    CreateList(Lb, n2);
+    MergeList(La,Lb,Lc);
+    output(Lc);
+	getchar();
+	getchar();
+	return 0;
+}
